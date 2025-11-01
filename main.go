@@ -34,25 +34,6 @@ func main() {
 	})
 
 	s.Use(rweb.RequestInfo)
-
-	// type MidWare func(ctx rweb.Context) error
-	var authMidWare rweb.Handler
-
-	authMidWare = func(ctx rweb.Context) error {
-		fmt.Println("**-> Checking Auth...")
-
-		reqPath := ctx.Request().Path()
-		if strings.Contains(reqPath, "roh") {
-			fmt.Println("**-> Auth OK")
-			return ctx.Next()
-		}
-
-		ctx.Response().SetStatus(http.StatusUnauthorized) // 401
-		return nil
-	}
-
-	s.Use(authMidWare)
-
 	/*	// Middleware 1: Request logging middleware
 		// This middleware logs each request's method, path, response status, and duration
 		// Middleware in rweb is executed in the order it's registered
@@ -76,6 +57,24 @@ func main() {
 			return ctx.Next()
 		})
 	*/
+
+	// type MidWare func(ctx rweb.Context) error
+	// var authMidWare rweb.Handler
+
+	authMidWare := func(ctx rweb.Context) error {
+		fmt.Println("**-> Checking Auth...")
+
+		reqPath := ctx.Request().Path()
+		if strings.Contains(reqPath, "roh") {
+			fmt.Println("**-> Auth OK")
+			return ctx.Next()
+		}
+
+		ctx.Response().SetStatus(http.StatusUnauthorized) // 401
+		return nil
+	}
+
+	s.Use(authMidWare)
 
 	// We could put the middleware function definition in a variable like this
 	midWare2 := func(ctx rweb.Context) error {
@@ -174,11 +173,11 @@ func main() {
 }
 
 // Outputs
-// ~/…/oneoffs/form_exer>curl -X POST -d "dept=support" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
+// >curl -X POST -d "dept=support" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
 // Posted - form_id: 123%
-// ~/…/oneoffs/form_exer>curl -X POST -d "dept=support" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
+// >curl -X POST -d "dept=support" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
 // Posted - form_id: 123, dept: support%
-// ~/…/oneoffs/form_exer>curl -X POST -d "dept=support" -d "name=Sue" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
+// >curl -X POST -d "dept=support" -d "name=Sue" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
 // Posted - form_id: 123, dept: support%
-// ~/…/oneoffs/form_exer>curl -X POST -d "dept=support" -d "name=Sue" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/123
+// >curl -X POST -d "dept=support" -d "name=Sue" -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8000/post-form-data/roh
 // Posted - form_id: 123, dept: support, name:Sue%
