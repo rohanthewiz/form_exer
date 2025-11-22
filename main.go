@@ -5,12 +5,14 @@ package main
 
 import (
 	"fmt"
+	"form_exer/web/pages"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/rohanthewiz/element"
 	"github.com/rohanthewiz/rweb"
 )
 
@@ -95,13 +97,11 @@ func main() {
 	// [master handler -> Lookup route]
 
 	// Route: Root endpoint
-	// Handles GET requests to "/"
+	// Handles GET requests to "/" - the home page
 	// Test with: curl http://localhost:8080/
 	s.Get("/", func(ctx rweb.Context) error {
-		ctx.Response().SetHeader("Content-Type", "text/plain; charset=utf-8")
-
-		// WriteString sends a plain text response
-		return ctx.WriteString("Welcome\n")
+		ctx.Response().SetHeader("Content-Type", "text/html; charset=utf-8")
+		return ctx.WriteHTML(pages.HomePage.Render())
 	})
 
 	s.Get("/roh", func(ctx rweb.Context) error {
@@ -131,6 +131,23 @@ func main() {
 			outStr := fmt.Sprintf("Posted - form_id: %s, dept: %s, name: %s", formId, dept, name)
 
 			return ctx.WriteString(outStr)
+		})
+
+	s.Post("/contact",
+		func(ctx rweb.Context) error {
+			name := ctx.Request().FormValue("name") // form data "name=JohnDoe"
+			email := ctx.Request().FormValue("email")
+			message := ctx.Request().FormValue("message")
+			outStr := fmt.Sprintf("Posted - name: %s, email: %s, message: %s", name, email, message)
+
+			b := element.NewBuilder()
+			b.Body("style", "background-color:darkgreen").R(
+				b.H1("style", "color:maroon;background-color:#dfc673").T("Welcome"),
+				b.Hr(),
+				b.P().T(outStr),
+			)
+
+			return ctx.WriteHTML(b.String())
 		})
 
 	// Example 3: Serve .well-known files (for SSL certificates, etc.)

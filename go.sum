@@ -4,3 +4,5 @@ github.com/rohanthewiz/rweb v0.1.19-0.20250724033211-0709f777d0de h1:FQzMNtb9hsc
 github.com/rohanthewiz/rweb v0.1.19-0.20250724033211-0709f777d0de/go.mod h1:SdkvSM89cA18qlEm6oh8o7CpKaOCWgdNBzPeiF6I/As=
 github.com/rohanthewiz/serr v1.2.16 h1:NDV7yhoHVkZMMSKrJzxysZHUcS7vo3QU88D2B7MHGio=
 github.com/rohanthewiz/serr v1.2.16/go.mod h1:WYBghPccoTAUknotbanGZzWnIFREXYI5ULwf5sjznxY=
+github.com/rohanthewiz/serr v1.2.20 h1:/oMu0SQ5LjN7b3Tl8uKcJRlptpqQyRJbyV01G8ZgGNw=
+github.com/rohanthewiz/serr v1.2.20/go.mod h1:WYBghPccoTAUknotbanGZzWnIFREXYI5ULwf5sjznxY=
