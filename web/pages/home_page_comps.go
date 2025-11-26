@@ -1,23 +1,27 @@
 package pages
 
-import "github.com/rohanthewiz/element"
+import (
+	"form_exer/web/shared"
+	"github.com/rohanthewiz/element"
+)
 
 // Home Page component
 type Home struct {
-	Heading string
+	shared.Page // Mixin for common page components
+	Heading     string
 }
 
 func (h Home) Render() (out string) {
 	b := element.NewBuilder()
 
 	b.Body("style", "background-color:tan").R(
+		element.RenderComponents(b,
+			h.Banner(),      // Common banner from Page mixin
+			ContactForm{},   // Page-specific content
+			h.Footer(),      // Common footer from Page mixin
+		),
 		b.H1("style", "color:maroon;background-color:#dfc673").T(h.Heading),
-
-		element.RenderComponents(b, ContactForm{}, Footer{}),
-		// ContactForm{}.Render(b), Footer{}.Render(b),
 	)
-
-	// ...
 
 	return b.String()
 }
@@ -38,11 +42,3 @@ func (c ContactForm) Render(b *element.Builder) (dontCare any) {
 	return
 }
 
-type Footer struct{}
-
-func (f Footer) Render(b *element.Builder) (dontCare any) {
-	b.Div("style", "background-color:lightgray").R(
-		b.P("style", "color:gray").T("Copyright &copy; 2025"),
-	)
-	return
-}
