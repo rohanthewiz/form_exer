@@ -106,6 +106,13 @@ func main() {
 		return ctx.WriteHTML(pages.HomePage.Render())
 	})
 
+	// Route: Contact page
+	// Handles GET requests to "/contact" - displays the contact form
+	s.Get("/contact", func(ctx rweb.Context) error {
+		ctx.Response().SetHeader("Content-Type", "text/html; charset=utf-8")
+		return ctx.WriteHTML(pages.Contact.Render())
+	})
+
 	/*	s.Get("/roh", func(ctx rweb.Context) error {
 			ctx.Response().SetHeader("Content-Type", "text/plain; charset=utf-8")
 
